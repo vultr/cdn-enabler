@@ -473,7 +473,7 @@ final class CDN_Enabler {
         }
 
         // check if KeyCDN Zone ID is set
-        if ( ! is_int( CDN_Enabler_Engine::$settings['keycdn_zone_id'] ) ) {
+        if ( ! wp_is_uuid( CDN_Enabler_Engine::$settings['keycdn_zone_id'] ) ) {
             return;
         }
 
@@ -669,11 +669,14 @@ final class CDN_Enabler {
 
         // purge CDN cache API call
         $response = wp_remote_get(
-            'https://api.keycdn.com/zones/purge/' . CDN_Enabler_Engine::$settings['keycdn_zone_id'] . '.json',
+            'https://api.vultr.com/v2/cdns/pull-zones/' . CDN_Enabler_Engine::$settings['keycdn_zone_id'] . '/purge',
             array(
                 'timeout'     => 15,
                 'httpversion' => '1.1',
-                'headers'     => array( 'Authorization' => 'Basic ' . base64_encode( CDN_Enabler_Engine::$settings['keycdn_api_key'] . ':' ) ),
+                'headers'     => array(
+                    'Authorization' => 'Bearer ' . CDN_Enabler_Engine::$settings['keycdn_api_key'],
+                    'User-Agent'    => 'cdn-enabler/2.0.7'
+                ),
             )
         );
 
@@ -688,7 +691,7 @@ final class CDN_Enabler {
         } else {
             $response_status_code = wp_remote_retrieve_response_code( $response );
 
-            if ( $response_status_code === 200 ) {
+            if ( $response_status_code === 202 ) {
                 $response = array(
                     'wrapper' => '<div class="notice notice-success is-dismissible"><p><strong>%s</strong></p></div>',
                     'message' => esc_html__( 'CDN cache purged.', 'cdn-enabler' ),
@@ -865,8 +868,7 @@ final class CDN_Enabler {
     private static function validate_zone_id( $zone_id ) {
 
         $zone_id = sanitize_text_field( $zone_id );
-        $zone_id = absint( $zone_id );
-        $validated_zone_id = ( $zone_id === 0 ) ? '' : $zone_id;
+        $validated_zone_id = wp_is_uuid( $zone_id ) ? $zone_id : '';
 
         return $validated_zone_id;
     }
@@ -999,13 +1001,13 @@ final class CDN_Enabler {
             <h1><?php esc_html_e( 'CDN Enabler Settings', 'cdn-enabler' ); ?></h1>
 
             <?php
-            if ( strpos( CDN_Enabler_Engine::$settings['cdn_hostname'], '.kxcdn.com' ) === false && ( strlen( CDN_Enabler_Engine::$settings['keycdn_api_key'] ) < 20 || ! is_int( CDN_Enabler_Engine::$settings['keycdn_zone_id'] ) ) ) {
+            if ( strpos( CDN_Enabler_Engine::$settings['cdn_hostname'], '.kxcdn.com' ) === false && ( strlen( CDN_Enabler_Engine::$settings['keycdn_api_key'] ) < 20 || ! wp_is_uuid( CDN_Enabler_Engine::$settings['keycdn_zone_id'] ) ) ) {
                 printf(
                     '<div class="notice notice-info"><p>%s</p></div>',
                     sprintf(
                         // translators: %s: KeyCDN
                         esc_html__( 'Combine CDN Enabler with %s for even better WordPress performance.', 'cdn-enabler' ),
-                        '<strong><a href="https://www.keycdn.com?utm_source=wp-admin&utm_medium=plugins&utm_campaign=cdn-enabler" target="_blank" rel="nofollow noopener">KeyCDN</a></strong>'
+                        '<strong><a href="https://www.vultr.com?utm_source=wp-admin&utm_medium=plugins&utm_campaign=cdn-enabler" target="_blank" rel="nofollow noopener">Vultr</a></strong>'
                     )
                 );
             }
@@ -1070,12 +1072,12 @@ final class CDN_Enabler {
                 </table>
 
                 <h2 class="title">Purge CDN Cache</h2>
-                <p><?php esc_html_e( 'If you like, you may connect your KeyCDN account to be able to purge the CDN cache from the WordPress admin bar.', 'cdn-enabler' ) ?></p>
+                <p><?php esc_html_e( 'If you like, you may connect your Vultr account to be able to purge the CDN cache from the WordPress admin bar.', 'cdn-enabler' ) ?></p>
 
                 <table class="form-table">
                     <tr valign="top">
                         <th scope="row">
-                            <?php esc_html_e( 'KeyCDN API Key', 'cdn-enabler' ); ?>
+                            <?php esc_html_e( 'Vultr API Key', 'cdn-enabler' ); ?>
                         </th>
                         <td>
                             <fieldset>
@@ -1088,7 +1090,7 @@ final class CDN_Enabler {
 
                     <tr valign="top">
                         <th scope="row">
-                            <?php esc_html_e( 'KeyCDN Zone ID', 'cdn-enabler' ); ?>
+                            <?php esc_html_e( 'Vultr CDN ID', 'cdn-enabler' ); ?>
                         </th>
                         <td>
                             <fieldset>

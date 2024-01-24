@@ -1,13 +1,12 @@
 {
-    "name": "keycdn/cdn-enabler",
+    "name": "vultr/cdn-enabler",
     "description": "A content delivery network (CDN) integration plugin for WordPress that rewrites URLs, like for CSS, JavaScript, and images, to be served by a CDN.",
     "type": "wordpress-plugin",
-    "homepage": "https://wordpress.org/plugins/cdn-enabler/",
+    "homepage": "https://github.com/vultr/cdn-enabler",
     "license": "GPL-2.0-or-later",
     "support": {
-        "issues": "https://wordpress.org/support/plugin/cdn-enabler/",
-        "source": "https://github.com/keycdn/cdn-enabler",
-        "docs": "https://www.keycdn.com/support/wordpress-cdn-enabler-plugin"
+        "issues": "https://github.com/vultr/cdn-enabler/issues",
+        "source": "https://github.com/vultr/cdn-enabler"
     },
     "minimum-stability": "stable",
     "require": {
