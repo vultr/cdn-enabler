@@ -3,8 +3,8 @@
 Plugin Name: CDN Enabler
 Text Domain: cdn-enabler
 Description: Simple and fast WordPress content delivery network (CDN) integration plugin.
-Author: KeyCDN
-Author URI: https://www.keycdn.com
+Author: Vultr
+Author URI: https://www.vultr.com
 License: GPLv2 or later
 Version: 2.0.7
 */
