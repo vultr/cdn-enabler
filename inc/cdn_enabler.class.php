@@ -1001,7 +1001,7 @@ final class CDN_Enabler {
             <h1><?php esc_html_e( 'CDN Enabler Settings', 'cdn-enabler' ); ?></h1>
 
             <?php
-            if ( strpos( CDN_Enabler_Engine::$settings['cdn_hostname'], '.kxcdn.com' ) === false && ( strlen( CDN_Enabler_Engine::$settings['keycdn_api_key'] ) < 20 || ! wp_is_uuid( CDN_Enabler_Engine::$settings['keycdn_zone_id'] ) ) ) {
+            if ( strpos( CDN_Enabler_Engine::$settings['cdn_hostname'], '.vultrcdn.com' ) === false && ( strlen( CDN_Enabler_Engine::$settings['keycdn_api_key'] ) < 20 || ! wp_is_uuid( CDN_Enabler_Engine::$settings['keycdn_zone_id'] ) ) ) {
                 printf(
                     '<div class="notice notice-info"><p>%s</p></div>',
                     sprintf(
@@ -1032,7 +1032,7 @@ final class CDN_Enabler {
                                     printf(
                                         esc_html__( 'Example: %1$s or %2$s', 'cdn-enabler' ),
                                         '<code class="code--form-control">cdn.example.com</code>',
-                                        '<code class="code--form-control">example-1a2b.kxcdn.com</code>'
+                                        '<code class="code--form-control">cdn-example.vultrcdn.com</code>'
                                     );
                                     ?>
                                 </p>
